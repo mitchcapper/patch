@@ -316,6 +316,7 @@ set_file_attributes (char *to, int tofd, enum file_attributes attr,
 		S_ISLNK (mode) ? "symbolic link" : "file",
 		quotearg (to));
     }
+#ifndef  _WIN32
   if (attr & FA_IDS)
     {
       uid_t uid_1 = -1;
@@ -351,6 +352,7 @@ set_file_attributes (char *to, int tofd, enum file_attributes attr,
 		S_ISLNK (mode) ? "symbolic link" : "file",
 		quotearg (to));
     }
+#endif //  _WIN32
   if (attr & FA_XATTRS)
     if (copy_attr (from, fromfd, to, tofd) < 0
 	&& errno != ENOSYS && errno != ENOTSUP
@@ -1870,12 +1872,21 @@ cwd_is_root (char const *name)
     }
   else
     {
+#ifndef _WIN32	
       char root[4];
+#else
+      char * root = xmalloc (sizeof(char) * (prefix_len + 2));
+#endif	  
       memcpy (root, name, prefix_len);
       root[prefix_len] = '/';
       root[prefix_len + 1] = 0;
-      if (stat (root, &st) < 0)
+	  int res = stat (root, &st);
+#ifdef _WIN32
+	  free (root);
+#endif
+      if (res < 0)
 	return false;
+
       root_dev = st.st_dev;
       root_ino = st.st_ino;
     }

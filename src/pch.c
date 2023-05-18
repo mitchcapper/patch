@@ -127,13 +127,13 @@ open_patch_file (char const *filename)
       pfp = stdin;
     else
       {
-	pfp = fopen (filename, binary_transput ? "rb" : "r");
+	pfp = fopen (filename, binary_transput | READ_MODE_ALWAYS_BINARY_FOR_W32 ? "rb" : "r");
 	if (!pfp)
 	  pfatal ("Can't open patch file %s", quotearg (filename));
       }
     int pfd = fileno (pfp);
 #if HAVE_SETMODE_DOS
-    if (binary_transput)
+    if (binary_transput | READ_MODE_ALWAYS_BINARY_FOR_W32)
       {
 	if (isatty (pfd))
 	  fatal ("cannot read binary data from tty on this platform");
@@ -2391,7 +2391,7 @@ do_ed_script (char *input_name, struct outfile *output, FILE *ofp)
 
     if (ofp)
       {
-	FILE *ifp = fopen (output_name, binary_transput ? "rb" : "r");
+	FILE *ifp = fopen (output_name, binary_transput | READ_MODE_ALWAYS_BINARY_FOR_W32 ? "rb" : "r");
 	int c;
 	if (!ifp)
 	  pfatal ("can't open '%s'", output_name);

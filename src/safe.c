@@ -103,6 +103,7 @@ static void free_cached_dirfd (struct cached_dirfd *entry)
 
 static void init_dirfd_cache (void)
 {
+#ifndef _WIN32
   struct rlimit nofile;
 
   if (getrlimit (RLIMIT_NOFILE, &nofile) == 0)
@@ -114,7 +115,10 @@ static void init_dirfd_cache (void)
     }
   else
     max_cached_fds = min_cached_fds;
+#else
+	min_cached_fds = max_cached_fds = OPEN_MAX;
 
+#endif
   cached_dirfds = hash_initialize (min_cached_fds, nullptr,
 				   hash_cached_dirfd,
 				   compare_cached_dirfds, nullptr);
@@ -564,7 +568,7 @@ safe_xstat (char *pathname, struct stat *buf, int flags)
   int dirfd;
 
   if (unsafe)
-    return fstatat (AT_FDCWD, pathname, buf, flags);
+	  return fstatat (AT_FDCWD, pathname, buf, flags);
 
   dirfd = traverse_path (&pathname);
   if (dirfd == DIRFD_INVALID)

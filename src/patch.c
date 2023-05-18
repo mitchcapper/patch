@@ -1616,7 +1616,7 @@ static void
 init_reject (char const *outname)
 {
   int fd;
-  fd = make_tempfile (&tmprej, 'r', outname, O_WRONLY | binary_transput, 0666);
+  fd = make_tempfile (&tmprej, 'r', outname, O_WRONLY | binary_transput | READ_MODE_ALWAYS_BINARY_FOR_W32, 0666);
   if (fd < 0)
     pfatal ("Can't create temporary file %s", tmprej.name);
   rejfp = fdopen (fd, binary_transput ? "wb" : "w");

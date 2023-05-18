@@ -27,6 +27,13 @@ enum { DIRFD_INVALID = -1 - (AT_FDCWD == -1) };
 
 extern bool unsafe;
 
+#if defined _WIN32
+typedef unsigned long rlim_t;
+#define OPEN_MAX 256 //from cygwin
+#define RLIM_INFINITY	(~0UL)
+#define PATH_MAX 260
+#endif
+
 int safe_stat (char *pathname, struct stat *buf);
 int safe_lstat (char *pathname, struct stat *buf);
 int safe_open (char *pathname, int flags, mode_t mode);

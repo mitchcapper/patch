@@ -127,11 +127,18 @@ _Noreturn void fatal_exit (void);
 #if ! (HAVE_GETEUID || defined geteuid)
 # if ! (HAVE_GETUID || defined getuid)
 #  define geteuid() (-1)
+#  define getegid() (-1)
 # else
 #  define geteuid() getuid ()
 # endif
 #endif
 
+
+#ifdef _WIN32
+#define READ_MODE_ALWAYS_BINARY_FOR_W32 O_BINARY
+#else
+#define READ_MODE_ALWAYS_BINARY_FOR_W32
+#endif
 #ifdef HAVE_SETMODE_DOS
   extern int binary_transput;	/* O_BINARY if binary i/o is desired */
 #else
