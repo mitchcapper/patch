@@ -38,6 +38,7 @@ static void compute_changes (idx_t, idx_t, idx_t, idx_t, char *, char *);
 #define NOTE_DELETE(ctxt, xoff) ctxt->xchar[xoff] = '-';
 #define NOTE_INSERT(ctxt, yoff) ctxt->ychar[yoff] = '+';
 #define USE_HEURISTIC 1
+#define OFFSET_MAX PTRDIFF_MAX
 #include "diffseq.h"
 
 static idx_t
