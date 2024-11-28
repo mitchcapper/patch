@@ -399,7 +399,7 @@ main (int argc, char **argv)
 	if (!skip_rest_of_patch) {
 	    if (S_ISREG (file_type) && instat.st_size != 0)
 	      {
-		int oflags = (O_RDONLY | binary_transput
+		int oflags = (O_RDONLY | binary_transput | READ_MODE_ALWAYS_BINARY_FOR_W32
 			      | (follow_symlinks ? 0 : O_NOFOLLOW));
 		ifd = safe_open (inname, oflags, 0);
 		if (ifd < 0)

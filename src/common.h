@@ -137,7 +137,7 @@ _Noreturn void fatal_exit (void);
 #ifdef _WIN32
 #define READ_MODE_ALWAYS_BINARY_FOR_W32 O_BINARY
 #else
-#define READ_MODE_ALWAYS_BINARY_FOR_W32
+#define READ_MODE_ALWAYS_BINARY_FOR_W32 0
 #endif
 #ifdef HAVE_SETMODE_DOS
   extern int binary_transput;	/* O_BINARY if binary i/o is desired */
