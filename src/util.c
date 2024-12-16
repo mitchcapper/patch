@@ -1229,7 +1229,9 @@ init_signals (void)
 {
   static int const sigs[] =
     {
+#ifdef SIGHUP
       SIGHUP,
+#endif      
       SIGINT,
 #ifdef SIGPIPE
       SIGPIPE,
@@ -1245,9 +1247,10 @@ init_signals (void)
 #endif
     };
   enum { NUM_SIGS = sizeof sigs / sizeof *sigs };
-
+#ifndef _WIN32
   /* System V fork+wait does not work if SIGCHLD is ignored.  */
   signal (SIGCHLD, SIG_DFL);
+#endif  
 
 #if HAVE_SIGACTION && HAVE_SIGFILLSET
   struct sigaction fatal_act = { .sa_handler = handle_signal };
