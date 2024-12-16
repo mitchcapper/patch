@@ -352,7 +352,7 @@ set_file_attributes (char *to, int tofd, enum file_attributes attr,
 		S_ISLNK (mode) ? "symbolic link" : "file",
 		quotearg (to));
     }
-#endif //  _WIN32
+
   if (attr & FA_XATTRS)
     if (copy_attr (from, fromfd, to, tofd) < 0
 	&& errno != ENOSYS && errno != ENOTSUP
@@ -369,6 +369,7 @@ set_file_attributes (char *to, int tofd, enum file_attributes attr,
 		S_ISLNK (mode) ? "symbolic link" : "file",
 		quotearg (to));
     }
+  #endif //  _WIN32
 }
 
 static void
